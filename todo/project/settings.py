@@ -31,6 +31,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "crispy_forms",
     "crispy_bootstrap5",
+    "allauth",
+    "allauth.account",
+    "todo.tasks",
 ]
 
 MIDDLEWARE = [
@@ -41,6 +44,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "todo.project.urls"
@@ -123,3 +127,20 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# == django-allauth settings ==
+
+# Redirect to the home page after login and logout
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_LOGOUT_REDIRECT = "/"
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+ACCOUNT_SESSION_REMEMBER = True
+
+# Disable rate limits when debuging
+if DEBUG:
+    ACCOUNT_RATE_LIMITS = False

@@ -1,0 +1,8 @@
+{% extends "account/card.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block form_actions %}
+    <input class="btn btn-primary" type="submit" value="Login" form="auth-form" :disabled="submitting"/>
+    <a href="{% url "account_signup" %}" hx-boost="true">Sign up</a>
+{% endblock form_actions %}

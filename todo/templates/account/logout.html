@@ -1,0 +1,19 @@
+{% extends "account/card.html" %}
+
+{% block title %}Sign out{% endblock %}
+
+{% block form %}
+    <form id="auth-form"
+        hx-post="{{ request.path }}"
+        hx-select=".card-body #auth-form"
+        hx-swap="outerHTML"
+        x-init="submitting = false"
+        @submit.prevent="submitting = true">
+        {% csrf_token %}
+        Do you really want to sign out?
+    </form>
+{% endblock form %}
+
+{% block form_actions %}
+    <input class="btn btn-primary" type="submit" value="Sign out" form="auth-form" :disabled="submitting"/>
+{% endblock form_actions %}
