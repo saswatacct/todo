@@ -1,0 +1,15 @@
+name: todo-app-dev
+services:
+  db:
+    image: postgres:14-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=todo
+      - POSTGRES_PASSWORD=todo
+      - POSTGRES_DB=todo
+    volumes:
+      - dev-postgres-data:/var/lib/postgresql/data
+volumes:
+  dev-postgres-data:
