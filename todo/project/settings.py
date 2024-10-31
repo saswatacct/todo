@@ -47,6 +47,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
+    "todo.project.middleware.authentication_redirect_middlware",
 ]
 
 ROOT_URLCONF = "todo.project.urls"
