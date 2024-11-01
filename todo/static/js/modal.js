@@ -10,7 +10,7 @@ function modalComponent() {
         this.modal.show();
       });
     },
-    closeModal() {
+    hideModal() {
       this.modal.hide();
     },
   };

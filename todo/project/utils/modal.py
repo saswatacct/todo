@@ -50,18 +50,10 @@ class ModalMixin:
 
         return self.modal_options
 
-    def dispatch(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
-        response: HttpResponse = super().dispatch(request, *args, **kwargs)
+    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        response: HttpResponse = super().get(request, *args, **kwargs)
 
         if request.htmx:
             response = show_modal(response, self.get_modal_options())
-
-        return response
-
-    def form_valid(self, *args, **kwargs) -> HttpResponse:
-        response: HttpResponse = super().form_valid(*args, **kwargs)
-
-        if self.request.htmx:
-            response = hide_modal(response, self.get_modal_options())
 
         return response
