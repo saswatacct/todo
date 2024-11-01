@@ -31,7 +31,7 @@
     <div class="d-flex align-items-center gap-2 opacity-0 parent-hover p-3">
         <span x-sort:handle style="cursor: grab;"><i class="bi bi-arrows-expand text-dark opacity-50"></i></span>
         <div class="vr"></div>
-        <a href="#"><i class="bi bi-pencil text-dark opacity-50"></i></a>
+        <a href="#" hx-get="{% url "tasks:task_update" pk=task.pk %}" hx-target=".modal"><i class="bi bi-pencil text-dark opacity-50"></i></a>
         <div class="vr"></div>
         <a href="#" hx-get="{% url "tasks:task_delete" pk=task.pk %}" hx-target=".modal"><i class="bi bi-trash text-dark opacity-50"></i></a>
     </div>

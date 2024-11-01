@@ -4,10 +4,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
-from django.views.generic import CreateView, DeleteView, View
+from django.views.generic import CreateView, DeleteView, UpdateView, View
 
 from todo.project.utils.htmx import render_swap, reswap
-from todo.project.utils.modal import ModalMixin, hide_modal
+from todo.project.utils.modal import HIDE_MODAL_EVENT, ModalMixin, hide_modal
 from todo.tasks.forms import TaskForm
 from todo.tasks.models import Project, Task
 
@@ -50,6 +50,38 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
             trigger={
                 "project-clear-form": form.instance.project.pk,
             },
+        )
+
+
+class TaskUpdateView(LoginRequiredMixin, ModalMixin, UpdateView):
+    template_name = "tasks/task/update_modal.html"
+    model = Task
+    form_class = TaskForm
+    success_url = "/"
+
+    def get_queryset(self) -> QuerySet[Any]:
+        # Filter the queryset to only return tasks
+        # that are owned by the user.
+        return super().get_queryset().filter(project__user=self.request.user)
+
+    def form_valid(self, form):
+        # Run the parent form_valid method to save the form
+        super().form_valid(form)
+
+        # Return the rendered task item template
+        # to be swapped into the project task list
+        # and trigger the hide modal event.
+        return render_swap(
+            self.request,
+            "tasks/task/item.html",
+            context={
+                "task": form.instance,
+            },
+            params={
+                "target": f'[data-task="{form.instance.pk}"]',
+                "select": "li",
+            },
+            trigger=[HIDE_MODAL_EVENT],
         )
 
 
