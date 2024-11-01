@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import View
 
 from todo.tasks.models import Task
@@ -20,3 +20,16 @@ class PriorityUpdateView(LoginRequiredMixin, View):
             task.set_priority(priority)
 
         return HttpResponse(status=204)
+
+
+class TaskCompleteView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        task = get_object_or_404(Task, pk=pk, project__user=request.user)
+        task.complete = not task.complete
+        task.save()
+
+        return render(
+            request,
+            "tasks/task/item.html",
+            {"task": task},
+        )

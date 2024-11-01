@@ -1,13 +1,19 @@
-<li class="list-group-item d-flex p-0 task" x-sort:item="{{ task.pk }}">
+<li class="list-group-item d-flex p-0 task" x-sort:item="{{ task.pk }}" x-data="{complete:{{ task.complete|yesno:'true,false' }}}">
     <div class="hstack">
         <div class="p-3">
-            <input type="checkbox" class="form-check-input" />
+            <input type="checkbox"
+                class="form-check-input"
+                name="complete"
+                x-model="complete"
+                hx-post="{% url "tasks:task_complete" pk=task.pk %}"
+                hx-target="closest li"
+                hx-swap="outerHTML" />
         </div>
         <div class="vr h-100 me-1 bg-danger"></div>
         <div class="vr h-100 bg-danger"></div>
     </div>
     <div class="flex-grow-1 p-3 text-muted border-end task-description d-flex align-items-center gap-2">
-        <div>
+        <div :class="complete ? 'text-decoration-line-through' : ''">
             <p class="fw-medium m-0" >
                 {{ task.description }}
             </p>
