@@ -1,0 +1,21 @@
+{% extends "modal/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Create project{% endblock %}
+
+{% block body %}
+    <form
+        id="create-project-form"
+        method="post"
+        hx-post="{% url "tasks:project_create" %}"
+        hx-swap="outerHTML"
+        hx-select="#create-project-form">
+        {% crispy form %}
+    </form>
+{% endblock %}
+
+{% block footer %}
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    <input type="submit" class="btn btn-success" value="Create" form="create-project-form"/>
+{% endblock %}

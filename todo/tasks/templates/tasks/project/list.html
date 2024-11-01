@@ -2,7 +2,13 @@
 
 
 {% block content %}
-    {% for project in projects %}
-        {% include "tasks/project/item.html" with project=project %}
-    {% endfor %}
+    <div class="vstack gap-5 mb-5" data-project-list>
+        {% for project in projects %}
+            {% include "tasks/project/item.html" with project=project %}
+        {% endfor %}
+    </div>
+
+    <div class="text-center">
+        <a href="#" hx-get="{% url "tasks:project_create" %}" hx-target=".modal" class="btn btn-primary btn-lg shadow">Create TODO List</a>
+    </div>
 {% endblock content %}
