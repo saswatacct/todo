@@ -83,9 +83,10 @@ class Task(models.Model):
     class Meta:
         ordering = [
             # Since we are using null=True and blank=True for the priority field,
-            # but setting the priority in the save method, we still need to ensure
-            # that the null values are sorted last.
-            models.F("priority").asc(nulls_last=True),
+            # but setting the priority in the save method, we don't need to ensure
+            # that the null values are sorted last. We can just sort by the priority
+            # field in ascending order.
+            "priority",
             # As a fallback, we can sort by the id of the task to ensure a consistent order.
             "id",
         ]
