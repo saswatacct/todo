@@ -1,0 +1,13 @@
+{% if request.user.is_authenticated %}
+    <nav class="navbar navbar-dark bg-dark shadow">
+        <div class="container-lg">
+            <a class="navbar-brand">Todo-app</a>
+            <form class="d-flex align-items-center gap-3 text-light" role="search">
+                <div>
+                    Welcome back <span class="fw-bold">{{ request.user.username }}</span>.
+                </div>
+                <a href="{% url 'account_logout' %}" class="btn btn-outline-light" hx-boost="true">Logout</a>
+            </form>
+        </div>
+    </nav>
+{% endif %}
