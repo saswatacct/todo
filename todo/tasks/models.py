@@ -5,6 +5,11 @@ User = get_user_model()
 
 
 class Project(models.Model):
+    """
+    Stores the details of a project that belongs to a user. The
+    project can have multiple tasks associated with it.
+    """
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="projects")
     name = models.CharField(max_length=50)
 
@@ -13,6 +18,12 @@ class Project(models.Model):
 
 
 class Task(models.Model):
+    """
+    Stores the details of a task that belongs to a project. The
+    task can be marked as complete or incomplete. The task can
+    have a description, deadline, and priority.
+    """
+
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="tasks")
     complete = models.BooleanField(default=False)
     description = models.TextField()
@@ -56,6 +67,12 @@ class Task(models.Model):
         self.save()
 
     def save(self, *args, **kwargs):
+        """
+        Override the save method to set the priority of the task
+        if it is not provided. The priority is set to the total
+        number of tasks in the project + 1.
+        """
+
         if self.priority is None:
             self.priority = Task.objects.filter(project=self.project).count() + 1
         super().save(*args, **kwargs)
@@ -65,6 +82,10 @@ class Task(models.Model):
 
     class Meta:
         ordering = [
-            models.F("priority").asc(nulls_last=True),  # NULL items come last,
+            # Since we are using null=True and blank=True for the priority field,
+            # but setting the priority in the save method, we still need to ensure
+            # that the null values are sorted last.
+            models.F("priority").asc(nulls_last=True),
+            # As a fallback, we can sort by the id of the task to ensure a consistent order.
             "id",
         ]

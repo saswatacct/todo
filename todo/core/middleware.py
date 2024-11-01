@@ -6,6 +6,15 @@ from django.urls import resolve
 
 
 def authentication_redirect_middlware(get_response: Callable[..., HttpResponse]) -> Callable[..., HttpResponse]:
+    """Middleware to redirect authenticated users from account views to the home page.
+
+    Args:
+        get_response (Callable[..., HttpResponse]): Callable to get the response
+
+    Returns:
+        Callable[..., HttpResponse]: Middleware function
+    """
+
     def middleware(request: HttpRequest) -> HttpResponse:
         response = get_response(request)
 
