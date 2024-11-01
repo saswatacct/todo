@@ -1,8 +1,11 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, ListView, UpdateView
+from typing import Any
 
-from todo.project.utils.htmx import render_swap
-from todo.project.utils.modal import HIDE_MODAL_EVENT, ModalMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.query import QuerySet
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+
+from todo.project.utils.htmx import render_swap, reswap
+from todo.project.utils.modal import HIDE_MODAL_EVENT, ModalMixin, hide_modal
 from todo.tasks.forms import ProjectForm
 from todo.tasks.models import Project
 
@@ -72,4 +75,34 @@ class ProjectUpdateView(LoginRequiredMixin, ModalMixin, UpdateView):
                 "select": ".project-name",
             },
             trigger=[HIDE_MODAL_EVENT],
+        )
+
+
+class ProjectDeleteView(LoginRequiredMixin, ModalMixin, DeleteView):
+    model = Project
+    template_name = "tasks/project/delete_modal.html"
+    success_url = "/"
+
+    def get_queryset(self) -> QuerySet[Any]:
+        # Filter the queryset to only return tasks
+        # that are owned by the user.
+        return self.request.user.projects.all()
+
+    def delete(self, *args, **kwargs):
+        # Run the parent delete method to delete the task
+        response = super().delete(*args, **kwargs)
+
+        # Status code 200 is required by HTMX
+        # to delete the item from the DOM.
+        # See: https://htmx.org/attributes/hx-delete/ for more information.
+        response.status_code = 200
+
+        # Return the response object with the hide modal event
+        # to close the modal after the project is deleted.
+        return hide_modal(
+            reswap(
+                response,
+                {"target": f'[data-project="{self.kwargs["pk"]}"]'},
+            ),
+            {},
         )

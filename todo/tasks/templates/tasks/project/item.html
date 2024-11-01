@@ -7,7 +7,7 @@
         <div class="d-flex align-items-center gap-2 opacity-0 parent-hover">
             <a href="#" hx-get="{% url "tasks:project_update" pk=project.pk %}" hx-target=".modal"><i class="bi bi-pencil text-white opacity-50"></i></a>
             <div class="vr"></div>
-            <a href="#"><i class="bi bi-trash text-white opacity-50"></i></a>
+            <a href="#" hx-get="{% url "tasks:project_delete" pk=project.pk %}" hx-target=".modal"><i class="bi bi-trash text-white opacity-50"></i></a>
         </div>
     </div>
     <div class="card-header border-bottom d-flex gap-3 align-items-center py-2">
