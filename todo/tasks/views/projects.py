@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 
 from todo.project.utils.htmx import render_swap
 from todo.project.utils.modal import HIDE_MODAL_EVENT, ModalMixin
@@ -42,6 +42,34 @@ class ProjectCreateView(LoginRequiredMixin, ModalMixin, CreateView):
                 "swap": "beforeend",
                 "target": "[data-project-list]",
                 "select": ".card",
+            },
+            trigger=[HIDE_MODAL_EVENT],
+        )
+
+
+class ProjectUpdateView(LoginRequiredMixin, ModalMixin, UpdateView):
+    model = Project
+    form_class = ProjectForm
+    template_name = "tasks/project/update_modal.html"
+    success_url = "/"
+
+    def form_valid(self, form):
+        # Run the parent form_valid method to save the form
+        super().form_valid(form)
+
+        # Return the rendered project item template
+        # to be swapped into the project list and trigger
+        # hide modal event to close the modal.
+        return render_swap(
+            self.request,
+            "tasks/project/item.html",
+            context={
+                "project": form.instance,
+            },
+            params={
+                "swap": "innerHTML",
+                "target": f'[data-project="{form.instance.pk}"] .project-name',
+                "select": ".project-name",
             },
             trigger=[HIDE_MODAL_EVENT],
         )

@@ -1,0 +1,21 @@
+{% extends "modal/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Edit project{% endblock %}
+
+{% block body %}
+    <form
+        id="update-project-form"
+        method="post"
+        hx-post="{% url "tasks:project_update" pk=form.instance.pk %}"
+        hx-swap="outerHTML"
+        hx-select="#update-project-form">
+        {% crispy form %}
+    </form>
+{% endblock %}
+
+{% block footer %}
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    <input type="submit" class="btn btn-success" value="Save changes" form="update-project-form"/>
+{% endblock %}
