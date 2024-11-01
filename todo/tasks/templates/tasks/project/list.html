@@ -3,6 +3,6 @@
 
 {% block content %}
     {% for project in projects %}
-        {{ project }}
+        {% include "tasks/project/item.html" with project=project %}
     {% endfor %}
 {% endblock content %}

@@ -1,0 +1,33 @@
+.sortable-ghost {
+    opacity: 0.5 !important;
+}
+
+/* Dont highlight other element when one is moving */
+:has(.task:hover):not(:has(.sortable-chosen)) > .task:hover {
+    background-color: rgba(var(--bs-warning-rgb), 0.1);
+    transition: background-color 0.2s;
+}
+
+.parent-hover {
+    transition: opacity 0.15s;
+}
+
+:has(.opacity-0.parent-hover):hover > .opacity-0.parent-hover {
+    opacity: 1 !important;
+}
+
+/* Since mobile users can't hover over elements,
+   set their visibilty to visible */
+@media (max-width: 575.98px) {
+    .opacity-0.parent-hover {
+        opacity: 1 !important;
+    }
+}
+
+.task-list:not(:has(li)) {
+    padding-bottom: 1.5rem !important;
+}
+
+.task-list :last-child > div:not(.hstack) {
+    padding-bottom: 1.25rem !important;
+}
