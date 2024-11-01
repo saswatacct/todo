@@ -16,11 +16,21 @@
     opacity: 1 !important;
 }
 
-/* Since mobile users can't hover over elements,
-   set their visibilty to visible */
 @media (max-width: 575.98px) {
+    /* Since mobile users can't hover over elements,
+       set their visibilty to visible */
     .opacity-0.parent-hover {
         opacity: 1 !important;
+    }
+
+    /* Decrease padding for mobile users
+       to make the UI more compact */
+    .task-list li > :not(.hstack) {
+        padding: 0.5rem 0.75rem !important;
+    }
+
+    .task-list :last-child > div:not(.hstack) {
+        padding-bottom: .75rem !important;
     }
 }
 
@@ -30,4 +40,28 @@
 
 .task-list :last-child > div:not(.hstack) {
     padding-bottom: 1.25rem !important;
+}
+
+@media (min-width: 1080px) {
+  .container-lg {
+    max-width: 960px;
+  }
+}
+
+.container-lg {
+  margin: 0 auto;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    /* This is an average color of the image used as fallback */
+    background-color: rgb(149, 85, 49);
+    background-image: url(../img/background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    backdrop-filter: blur(50px);
+    min-height: 100%;
 }
