@@ -16,7 +16,7 @@
     </div>
     <div class="card-body p-0">
         <ul class="list-group list-group-flush rounded-4 rounded-top-0 task-list"
-            x-sort.ghost
+            x-sort.ghost="handleTaskPriority"
             data-task-list="{{ project.pk }}">
             {% for task in project.tasks.all %}
                 {% include "tasks/task/item.html" with task=task %}

@@ -20,8 +20,9 @@
     <script defer src="{% static "js/htmx.min.js" %}"></script>
     <!-- Custom -->
     <script src="{% static "js/modal.js" %}"></script>
+    <script src="{% static "js/tasks.js" %}"></script>
 </head>
-<body>
+<body hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
     {% block layout %}{% endblock %}
     {% include "modal/container.html" %}
 </body>
