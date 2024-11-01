@@ -6,7 +6,7 @@
                 <div>
                     Welcome back <span class="fw-bold">{{ request.user.username }}</span>.
                 </div>
-                <a href="{% url 'account_logout' %}" class="btn btn-outline-light" hx-boost="true">Logout</a>
+                <a href="#" hx-get="{% url 'account_logout' %}" hx-target=".modal" class="btn btn-outline-light" hx-boost="true">Logout</a>
             </form>
         </div>
     </nav>
