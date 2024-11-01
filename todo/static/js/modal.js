@@ -1,5 +1,9 @@
 function modalComponent() {
   return {
+    /**
+     * Show modal event listener
+     * @param {Event} custom HTMX event
+     */
     showModal(event) {
       // Wait for the next tick to ensure the modal is in the DOM
       this.$nextTick(() => {
@@ -10,6 +14,9 @@ function modalComponent() {
         this.modal.show();
       });
     },
+    /**
+     * Hide modal function
+     */
     hideModal() {
       this.modal.hide();
     },
