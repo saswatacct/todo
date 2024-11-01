@@ -1,4 +1,7 @@
-<li class="list-group-item d-flex p-0 task" x-sort:item="{{ task.pk }}" x-data="{complete:{{ task.complete|yesno:'true,false' }}}">
+<li class="list-group-item d-flex p-0 task"
+    x-sort:item="{{ task.pk }}"
+    x-data="{complete:{{ task.complete|yesno:'true,false' }}}"
+    data-task="{{ task.pk }}">
     <div class="hstack">
         <div class="p-3">
             <input type="checkbox"
@@ -30,6 +33,6 @@
         <div class="vr"></div>
         <a href="#"><i class="bi bi-pencil text-dark opacity-50"></i></a>
         <div class="vr"></div>
-        <a href="#"><i class="bi bi-trash text-dark opacity-50"></i></a>
+        <a href="#" hx-get="{% url "tasks:task_delete" pk=task.pk %}" hx-target=".modal"><i class="bi bi-trash text-dark opacity-50"></i></a>
     </div>
 </li>

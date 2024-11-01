@@ -1,11 +1,13 @@
 from typing import Any
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
-from django.views.generic import CreateView, View
+from django.views.generic import CreateView, DeleteView, View
 
-from todo.project.utils.htmx import render_swap
+from todo.project.utils.htmx import render_swap, reswap
+from todo.project.utils.modal import ModalMixin, hide_modal
 from todo.tasks.forms import TaskForm
 from todo.tasks.models import Project, Task
 
@@ -47,6 +49,35 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
             trigger={
                 "project-clear-form": form.instance.project.pk,
             },
+        )
+
+
+class TaskDeleteView(LoginRequiredMixin, ModalMixin, DeleteView):
+    model = Task
+    template_name = "tasks/task/delete.html"
+    success_url = "/"
+
+    def get_queryset(self) -> QuerySet[Any]:
+        return super().get_queryset().filter(project__user=self.request.user)
+
+    def delete(self, *args, **kwargs):
+        # Run the parent delete method to delete the task
+        response = super().delete(*args, **kwargs)
+
+        # Status code 200 is required by HTMX
+        # to delete the task from the DOM
+        # See: https://htmx.org/attributes/hx-delete/ for more information.
+        response.status_code = 200
+
+        # Return the response with the task item to be removed.
+        # Since we are overrding the delete method, we need to
+        # manually trigger the hide modal event.
+        return hide_modal(
+            reswap(
+                response,
+                {"target": f'[data-task="{self.kwargs["pk"]}"]'},
+            ),
+            {},
         )
 
 
