@@ -37,7 +37,7 @@ def hide_modal(response: HttpResponse, options: Mapping[str, Any]) -> HttpRespon
 
 
 class ModalMixin:
-    """A mixin to show a modal after a successful form submission."""
+    """A mixin to show a modal after a HTMX request."""
 
     modal_options: Mapping[str, Any] = {}
 
