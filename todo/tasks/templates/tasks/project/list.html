@@ -1,0 +1,8 @@
+{% extends "layouts/default.html" %}
+
+
+{% block content %}
+    {% for project in projects %}
+        {{ project }}
+    {% endfor %}
+{% endblock content %}
