@@ -15,11 +15,12 @@ from todo.tasks.models import Project, Task
 class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
     form_class = TaskForm
-    template_name = "tasks/task/form.html"
+    template_name = "tasks/task/create_form.html"
     success_url = "/"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
+        # Add the project primary key to the context
         context["project"] = {"pk": self.kwargs["pk"]}
         return context
 
@@ -54,10 +55,12 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
 
 class TaskDeleteView(LoginRequiredMixin, ModalMixin, DeleteView):
     model = Task
-    template_name = "tasks/task/delete.html"
+    template_name = "tasks/task/delete_modal.html"
     success_url = "/"
 
     def get_queryset(self) -> QuerySet[Any]:
+        # Filter the queryset to only return tasks
+        # that are owned by the user.
         return super().get_queryset().filter(project__user=self.request.user)
 
     def delete(self, *args, **kwargs):
@@ -96,10 +99,12 @@ class PriorityUpdateView(LoginRequiredMixin, View):
 
 class TaskCompleteView(LoginRequiredMixin, View):
     def post(self, request, pk):
+        # Get the task object and toggle the complete status
         task = get_object_or_404(Task, pk=pk, project__user=request.user)
         task.complete = not task.complete
         task.save()
 
+        # Return the task item template to be swapped into the project task list
         return render(
             request,
             "tasks/task/item.html",
