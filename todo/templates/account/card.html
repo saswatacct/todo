@@ -10,11 +10,11 @@
         <div class="card-body">
             {% block form %}
                 <form id="auth-form"
-                    hx-post="{{ request.path }}"
-                    hx-select=".card-body #auth-form"
-                    hx-swap="outerHTML"
-                    x-init="submitting = false"
-                    @submit.prevent="submitting = true">
+                      hx-post="{{ request.path }}"
+                      hx-select=".card-body #auth-form"
+                      hx-swap="outerHTML"
+                      x-init="submitting = false"
+                      @submit.prevent="submitting = true">
                     {% csrf_token %}
                     {% crispy form %}
                 </form>

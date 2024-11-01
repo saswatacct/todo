@@ -1,13 +1,15 @@
 <form
     class="flex-fill"
+    {# fmt:off #}
     x-data="{
         hasError: {{ form.errors|yesno:"true,false" }},
         description: '{{ form.description.value|escapejs }}',
         clearForm() {
             this.hasError = false;
             this.description = '';
-        }
+        },
     }"
+    {# fmt:on #}
     hx-post="{% url "tasks:task_create" pk=project.pk %}"
     hx-swap="outerHTML">
     <div class="input-group">

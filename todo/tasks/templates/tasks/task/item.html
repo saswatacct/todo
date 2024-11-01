@@ -5,12 +5,12 @@
     <div class="hstack">
         <div class="p-3">
             <input type="checkbox"
-                class="form-check-input"
-                name="complete"
-                x-model="complete"
-                hx-post="{% url "tasks:task_complete" pk=task.pk %}"
-                hx-target="closest li"
-                hx-swap="outerHTML" />
+                   class="form-check-input"
+                   name="complete"
+                   x-model="complete"
+                   hx-post="{% url "tasks:task_complete" pk=task.pk %}"
+                   hx-target="closest li"
+                   hx-swap="outerHTML" />
         </div>
         <div class="vr h-100 me-1 bg-danger"></div>
         <div class="vr h-100 bg-danger"></div>

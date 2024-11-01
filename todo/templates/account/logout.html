@@ -4,11 +4,11 @@
 
 {% block body %}
     <form id="auth-form"
-        hx-post="{{ request.path }}"
-        hx-select=".card-body #auth-form"
-        hx-swap="outerHTML"
-        x-init="submitting = false; "
-        @submit.prevent="submitting = true">
+          hx-post="{{ request.path }}"
+          hx-select=".card-body #auth-form"
+          hx-swap="outerHTML"
+          x-init="submitting = false; "
+          @submit.prevent="submitting = true">
         {% csrf_token %}
         Do you really want to sign out?
     </form>
