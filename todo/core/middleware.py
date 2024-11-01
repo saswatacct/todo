@@ -27,10 +27,6 @@ def authentication_redirect_middlware(get_response: Callable[..., HttpResponse])
             if name.startswith("account_") and request.user.is_authenticated:
                 response["HX-Redirect"] = "/"
 
-            # Handle the case when the user is logged out
-            if name == "account_logout":
-                response["HX-Redirect"] = "/"
-
         return response
 
     return middleware
