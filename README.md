@@ -28,10 +28,10 @@ A simple todo app using Django, HTMX, Bootstrap and Alpine.js.
     > **Note:** Don't forget to generate a new `SECRET_KEY` for your `.env` file.
     > You can use [Djecrety](https://djecrety.ir/) to generate a new secret key.
 
-3. Build and run docker containers
+3. Run the app using Docker Compose
 
     ```bash
-    docker-compose up -d
+    docker compose up -d
     ```
 
 4. See the app running at [localhost](http://localhost/). This url is defined in your `.env` file.
@@ -63,7 +63,7 @@ A simple todo app using Django, HTMX, Bootstrap and Alpine.js.
 4. Run the development database
 
     ```bash
-    docker-compose -f docker-compose.dev.yaml up -d
+    docker compose -f docker-compose.dev.yaml up -d
     ```
 
 4. Run the development server
