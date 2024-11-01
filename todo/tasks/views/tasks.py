@@ -6,8 +6,8 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import CreateView, DeleteView, UpdateView, View
 
-from todo.project.utils.htmx import render_swap, reswap
-from todo.project.utils.modal import HIDE_MODAL_EVENT, ModalMixin, hide_modal
+from todo.core.utils.htmx import render_swap, reswap
+from todo.core.utils.modal import HIDE_MODAL_EVENT, ModalMixin, hide_modal
 from todo.tasks.forms import TaskForm
 from todo.tasks.models import Project, Task
 

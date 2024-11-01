@@ -4,8 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
-from todo.project.utils.htmx import render_swap, reswap
-from todo.project.utils.modal import HIDE_MODAL_EVENT, ModalMixin, hide_modal
+from todo.core.utils.htmx import render_swap, reswap
+from todo.core.utils.modal import HIDE_MODAL_EVENT, ModalMixin, hide_modal
 from todo.tasks.forms import ProjectForm
 from todo.tasks.models import Project
 

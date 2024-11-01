@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "django_htmx",
     "widget_tweaks",
+    "todo.core",
     "todo.tasks",
 ]
 
@@ -48,7 +49,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
-    "todo.project.middleware.authentication_redirect_middlware",
+    "todo.core.middleware.authentication_redirect_middlware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 

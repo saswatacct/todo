@@ -1,6 +1,6 @@
 from allauth.account.views import LogoutView
 
-from todo.project.utils.modal import ModalMixin
+from todo.core.utils.modal import ModalMixin
 
 
 class CustomLogoutView(ModalMixin, LogoutView):
