@@ -16,6 +16,8 @@ django-crispy-forms = "^2.3"
 crispy-bootstrap5 = "^2024.10"
 django-allauth = "^65.1.0"
 django-htmx = "^1.21.0"
+whitenoise = "^6.8.2"
+gunicorn = "^23.0.0"
 
 
 [tool.poetry.group.dev.dependencies]

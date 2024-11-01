@@ -1,0 +1,27 @@
+name: todo-app
+services:
+  db:
+    image: postgres:14-alpine
+    restart: unless-stopped
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=todo
+      - POSTGRES_PASSWORD=todo
+      - POSTGRES_DB=todo
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  app:
+    build: .
+    command: gunicorn todo.project.wsgi -b 0.0.0.0:80
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=psql://todo:todo@db:5432/todo
+    env_file:
+      - .env
+volumes:
+  db_data:
