@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "django_htmx",
+    "widget_tweaks",
     "todo.tasks",
 ]
 

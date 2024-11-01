@@ -1,13 +1,18 @@
 from django.urls import path
 
 from .views.projects import ProjectListView
-from .views.tasks import PriorityUpdateView, TaskCompleteView
+from .views.tasks import PriorityUpdateView, TaskCompleteView, TaskCreateView
 
 app_name = "tasks"
 
 # Base urls
 urlpatterns = [
     path("", ProjectListView.as_view(), name="project_list"),
+]
+
+# Projects HTMX urls
+urlpatterns += [
+    path("projects/<int:pk>/task-create/", TaskCreateView.as_view(), name="task_create"),
 ]
 
 # Tasks HTMX urls

@@ -1,9 +1,53 @@
+from typing import Any
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
-from django.views.generic import View
+from django.views.generic import CreateView, View
 
-from todo.tasks.models import Task
+from todo.project.utils.htmx import render_swap
+from todo.tasks.forms import TaskForm
+from todo.tasks.models import Project, Task
+
+
+class TaskCreateView(LoginRequiredMixin, CreateView):
+    model = Task
+    form_class = TaskForm
+    template_name = "tasks/task/form.html"
+    success_url = "/"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["project"] = {"pk": self.kwargs["pk"]}
+        return context
+
+    def form_valid(self, form):
+        # Ensure the project is owned by the user
+        project: Project = get_object_or_404(Project, pk=self.kwargs["pk"], user=self.request.user)
+        form.instance.project = project
+
+        # Run the parent form_valid method to save the form
+        # and ensure that the task form is still valid.
+        super().form_valid(form)
+
+        # Return the rendered task item template
+        # to be swapped into the project task list
+        # and trigger the project clear form event
+        # to reset the task form.
+        return render_swap(
+            self.request,
+            "tasks/task/item.html",
+            context={
+                "task": form.instance,
+            },
+            params={
+                "swap": "beforeend",
+                "target": f'[data-task-list="{self.kwargs['pk']}"]',
+            },
+            trigger={
+                "project-clear-form": form.instance.project.pk,
+            },
+        )
 
 
 class PriorityUpdateView(LoginRequiredMixin, View):

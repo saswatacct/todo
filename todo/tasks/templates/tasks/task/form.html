@@ -1,6 +1,26 @@
-<form class="flex-fill">
+<form
+    class="flex-fill"
+    x-data="{
+        hasError: {{ form.errors|yesno:"true,false" }},
+        description: '{{ form.description.value|escapejs }}',
+        clearForm() {
+            this.hasError = false;
+            this.description = '';
+        }
+    }"
+    hx-post="{% url "tasks:task_create" pk=project.pk %}"
+    hx-swap="outerHTML">
     <div class="input-group">
-        <input type="text" name="description" class="form-control" placeholder="Start typing here to create new task..." required>
+        <input
+            type="text"
+            name="description"
+            class="form-control"
+            placeholder="Start typing here to create new task..."
+            x-model="description"
+            @input="hasError = false"
+            @project-clear-form.window="event.detail.value === {{ project.pk }} ? clearForm() : null"
+            :class="{'is-invalid': hasError}"
+            required>
         <button type="submit" class="btn btn-success px-3">Add task</button>
     </div>
 </form>
