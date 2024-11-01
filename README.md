@@ -72,6 +72,14 @@ A simple todo app using Django, HTMX, Bootstrap and Alpine.js.
     poetry run python -m todo.manage runserver
     ```
 
+### Testing
+
+To run tests, use the following command:
+
+```bash
+poetry run python -m todo.manage test
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
