@@ -13,6 +13,7 @@
                       hx-post="{{ request.path }}"
                       hx-select=".card-body #auth-form"
                       hx-swap="outerHTML"
+                      hx-disabled-elt="form .form-control"
                       x-init="submitting = false"
                       @submit.prevent="submitting = true">
                     {% csrf_token %}
