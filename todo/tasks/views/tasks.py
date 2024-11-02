@@ -25,7 +25,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         context["project"] = {"pk": self.kwargs["pk"]}
         return context
 
-    def form_valid(self, form):
+    def form_valid(self, form: TaskForm) -> HttpResponse:
         # Ensure the project is owned by the user
         project: Project = get_object_or_404(Project, pk=self.kwargs["pk"], user=self.request.user)
         form.instance.project = project
@@ -59,13 +59,13 @@ class TaskUpdateView(LoginRequiredMixin, ModalMixin, UpdateView):
     form_class = TaskForm
     success_url = "/"
 
-    def get_queryset(self) -> QuerySet[Any]:
+    def get_queryset(self) -> QuerySet[Task]:
         # Filter the queryset to only return tasks
         # that are owned by the user.
         return super().get_queryset().filter(project__user=self.request.user)
 
     @hide_modal
-    def form_valid(self, form):
+    def form_valid(self, form: TaskForm) -> HttpResponse:
         # Run the parent form_valid method to save the form
         super().form_valid(form)
 
@@ -88,13 +88,13 @@ class TaskDeleteView(LoginRequiredMixin, ModalMixin, DeleteView):
     template_name = "tasks/task/delete_modal.html"
     success_url = "/"
 
-    def get_queryset(self) -> QuerySet[Any]:
+    def get_queryset(self) -> QuerySet[Task]:
         # Filter the queryset to only return tasks
         # that are owned by the user.
         return super().get_queryset().filter(project__user=self.request.user)
 
     @hide_modal
-    def delete(self, *args, **kwargs):
+    def delete(self, *args, **kwargs) -> HttpResponse:
         # Run the parent delete method to delete the task
         response = super().delete(*args, **kwargs)
 
@@ -125,7 +125,7 @@ class PriorityUpdateView(LoginRequiredMixin, View):
 
 
 class TaskCompleteView(LoginRequiredMixin, View):
-    def post(self, request, pk):
+    def post(self, request: HttpRequest, pk: int) -> HttpResponse:
         # Get the task object and toggle the complete status
         task = get_object_or_404(Task, pk=pk, project__user=request.user)
         task.complete = not task.complete

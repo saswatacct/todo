@@ -13,7 +13,7 @@ class Project(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="projects")
     name = models.CharField(max_length=50)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -66,7 +66,7 @@ class Task(models.Model):
         self.priority = new_priority
         self.save()
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         """
         Override the save method to set the priority of the task
         if it is not provided. The priority is set to the total
@@ -77,7 +77,7 @@ class Task(models.Model):
             self.priority = Task.objects.filter(project=self.project).count() + 1
         super().save(*args, **kwargs)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.description[:18]
 
     class Meta:

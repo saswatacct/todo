@@ -1,4 +1,5 @@
 from allauth.account.views import LogoutView
+from django.http import HttpResponse
 
 from todo.core.utils.modal import ModalMixin
 
@@ -6,7 +7,7 @@ from todo.core.utils.modal import ModalMixin
 class CustomLogoutView(ModalMixin, LogoutView):
     """Custom logout view that redirects to the login page using htmx."""
 
-    def post(self, *args, **kwargs):
+    def post(self, *args, **kwargs) -> HttpResponse:
         """
         Handle the post request. Redirect to the login page using htmx.
         """

@@ -5,14 +5,16 @@ from django.http import HttpRequest, HttpResponse
 from django.urls import resolve
 
 
-def authentication_redirect_middlware(get_response: Callable[..., HttpResponse]) -> Callable[..., HttpResponse]:
+def authentication_redirect_middlware(
+    get_response: Callable[[HttpRequest], HttpResponse]
+) -> Callable[[HttpRequest], HttpResponse]:
     """Middleware to redirect authenticated users from account views to the home page.
 
     Args:
-        get_response (Callable[..., HttpResponse]): Callable to get the response
+        get_response (Callable[[HttpRequest], HttpResponse]): Callable to get the response
 
     Returns:
-        Callable[..., HttpResponse]: Middleware function
+        Callable[[HttpRequest], HttpResponse]: Middleware function
     """
 
     def middleware(request: HttpRequest) -> HttpResponse:

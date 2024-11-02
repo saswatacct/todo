@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
+from todo.tasks.models import Task
+
 User = get_user_model()
 
 
@@ -22,7 +24,7 @@ class BaseTest(TestCase):
 
 
 class TestTaskModel(BaseTest):
-    def assertPriority(self, project_task, priority):
+    def assertPriority(self, project_task: Task, priority: int):
         self.assertEqual(project_task.priority, priority)
 
         # Check the priority of the tasks in the project

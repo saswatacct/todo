@@ -1,7 +1,6 @@
-from typing import Any
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
+from django.http import HttpResponse
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from todo.core.utils.htmx import render_swap, reswap
@@ -15,7 +14,7 @@ class ProjectListView(LoginRequiredMixin, ListView):
     template_name = "tasks/project/list.html"
     context_object_name = "projects"
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Project]:
         return self.request.user.projects.all()
 
 
@@ -26,7 +25,7 @@ class ProjectCreateView(LoginRequiredMixin, ModalMixin, CreateView):
     success_url = "/"
 
     @hide_modal
-    def form_valid(self, form):
+    def form_valid(self, form: ProjectForm) -> HttpResponse:
         # Set the user of the project to the current user
         form.instance.user = self.request.user
 
@@ -55,7 +54,7 @@ class ProjectUpdateView(LoginRequiredMixin, ModalMixin, UpdateView):
     success_url = "/"
 
     @hide_modal
-    def form_valid(self, form):
+    def form_valid(self, form: ProjectForm) -> HttpResponse:
         # Run the parent form_valid method to save the form
         super().form_valid(form)
 
@@ -79,13 +78,13 @@ class ProjectDeleteView(LoginRequiredMixin, ModalMixin, DeleteView):
     template_name = "tasks/project/delete_modal.html"
     success_url = "/"
 
-    def get_queryset(self) -> QuerySet[Any]:
+    def get_queryset(self) -> QuerySet[Project]:
         # Filter the queryset to only return tasks
         # that are owned by the user.
         return self.request.user.projects.all()
 
     @hide_modal
-    def delete(self, *args, **kwargs):
+    def delete(self, *args, **kwargs) -> HttpResponse:
         # Run the parent delete method to delete the task
         response = super().delete(*args, **kwargs)
 
