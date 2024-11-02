@@ -15,7 +15,14 @@ A simple todo app using Django, HTMX, Bootstrap and Alpine.js.
 - Choose deadline for your task
 - Mark tasks as 'done'
 
-## Installation
+## Getting Started
+
+### Requirements
+
+- [Docker and Docker Compose](https://docs.docker.com/get-docker/)
+- [Git](https://git-scm.com/)
+
+### Installation
 
 1. Clone the repository
 
