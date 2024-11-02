@@ -27,7 +27,7 @@ def hide_modal(view: Callable[..., HttpResponse]) -> Callable[..., HttpResponse]
     """Hide a modal after a request.
 
     Args:
-        func (Callable[..., HttpResponse]): The view function.
+        view (Callable[..., HttpResponse]): The view function.
 
     Returns:
         Callable[..., HttpResponse]: The wrapper function.
