@@ -7,8 +7,9 @@ from django.shortcuts import get_object_or_404, render
 from django.views.generic import CreateView, DeleteView, UpdateView, View
 from django_htmx.http import trigger_client_event
 
+from todo.core.mixins import ModalMixin
 from todo.core.utils.htmx import render_swap, reswap
-from todo.core.utils.modal import ModalMixin, hide_modal
+from todo.core.utils.modal import hide_modal
 from todo.tasks.forms import TaskForm
 from todo.tasks.models import Project, Task
 

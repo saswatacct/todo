@@ -49,7 +49,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
-    "todo.core.middleware.authentication_redirect_middlware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 

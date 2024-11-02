@@ -3,8 +3,9 @@ from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
+from todo.core.mixins import ModalMixin
 from todo.core.utils.htmx import render_swap, reswap
-from todo.core.utils.modal import ModalMixin, hide_modal
+from todo.core.utils.modal import hide_modal
 from todo.tasks.forms import ProjectForm
 from todo.tasks.models import Project
 
