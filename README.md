@@ -4,7 +4,7 @@ A simple todo app using Django, HTMX, Bootstrap and Alpine.js.
 
 ## Preview
 
-![Preview](docs/preview.png)
+![Preview](docs/todo_preview.png)
 
 ## Features
 
