@@ -9,6 +9,8 @@
     </div>
 
     <div class="text-center">
-        <a href="#" hx-get="{% url "tasks:project_create" %}" hx-target=".modal" class="btn btn-primary btn-lg shadow">Create TODO List</a>
+        <a href="#" hx-get="{% url "tasks:project_create" %}" hx-target=".modal" class="btn btn-primary btn-lg shadow">
+            <i class="bi bi-plus"></i> Create Project
+        </a>
     </div>
 {% endblock content %}
