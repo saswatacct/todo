@@ -1,6 +1,7 @@
 {% extends "layouts/default.html" %}
 
 {% load modal %}
+{% load icons %}
 
 {% block content %}
     <div class="vstack gap-5 mb-5" data-project-list>
@@ -11,7 +12,7 @@
 
     <div class="text-center">
         <a href="#" {% modalurl "tasks:project_create" %} class="btn btn-primary btn-lg shadow">
-            <i class="bi bi-plus"></i> Create Project
+            {% ic "plus" %} Create Project
         </a>
     </div>
 {% endblock content %}
