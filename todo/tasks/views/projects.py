@@ -5,7 +5,7 @@ from django.db.models.query import QuerySet
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from todo.core.utils.htmx import render_swap, reswap
-from todo.core.utils.modal import HIDE_MODAL_EVENT, ModalMixin, hide_modal
+from todo.core.utils.modal import ModalMixin, hide_modal
 from todo.tasks.forms import ProjectForm
 from todo.tasks.models import Project
 
@@ -25,6 +25,7 @@ class ProjectCreateView(LoginRequiredMixin, ModalMixin, CreateView):
     template_name = "tasks/project/create_modal.html"
     success_url = "/"
 
+    @hide_modal
     def form_valid(self, form):
         # Set the user of the project to the current user
         form.instance.user = self.request.user
@@ -38,15 +39,12 @@ class ProjectCreateView(LoginRequiredMixin, ModalMixin, CreateView):
         return render_swap(
             self.request,
             "tasks/project/item.html",
-            context={
-                "project": form.instance,
-            },
+            context={"project": form.instance},
             params={
                 "swap": "beforeend",
                 "target": "[data-project-list]",
                 "select": ".card",
             },
-            trigger=[HIDE_MODAL_EVENT],
         )
 
 
@@ -56,6 +54,7 @@ class ProjectUpdateView(LoginRequiredMixin, ModalMixin, UpdateView):
     template_name = "tasks/project/update_modal.html"
     success_url = "/"
 
+    @hide_modal
     def form_valid(self, form):
         # Run the parent form_valid method to save the form
         super().form_valid(form)
@@ -66,15 +65,12 @@ class ProjectUpdateView(LoginRequiredMixin, ModalMixin, UpdateView):
         return render_swap(
             self.request,
             "tasks/project/item.html",
-            context={
-                "project": form.instance,
-            },
+            context={"project": form.instance},
             params={
                 "swap": "innerHTML",
                 "target": f'[data-project="{form.instance.pk}"] .project-name',
                 "select": ".project-name",
             },
-            trigger=[HIDE_MODAL_EVENT],
         )
 
 
@@ -88,6 +84,7 @@ class ProjectDeleteView(LoginRequiredMixin, ModalMixin, DeleteView):
         # that are owned by the user.
         return self.request.user.projects.all()
 
+    @hide_modal
     def delete(self, *args, **kwargs):
         # Run the parent delete method to delete the task
         response = super().delete(*args, **kwargs)
@@ -99,10 +96,7 @@ class ProjectDeleteView(LoginRequiredMixin, ModalMixin, DeleteView):
 
         # Return the response object with the hide modal event
         # to close the modal after the project is deleted.
-        return hide_modal(
-            reswap(
-                response,
-                {"target": f'[data-project="{self.kwargs["pk"]}"]'},
-            ),
-            {},
+        return reswap(
+            response,
+            {"target": f'[data-project="{self.kwargs["pk"]}"]'},
         )

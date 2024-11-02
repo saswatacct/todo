@@ -5,9 +5,10 @@ from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import CreateView, DeleteView, UpdateView, View
+from django_htmx.http import trigger_client_event
 
 from todo.core.utils.htmx import render_swap, reswap
-from todo.core.utils.modal import HIDE_MODAL_EVENT, ModalMixin, hide_modal
+from todo.core.utils.modal import ModalMixin, hide_modal
 from todo.tasks.forms import TaskForm
 from todo.tasks.models import Project, Task
 
@@ -33,23 +34,22 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         # and ensure that the task form is still valid.
         super().form_valid(form)
 
-        # Return the rendered task item template
-        # to be swapped into the project task list
-        # and trigger the project clear form event
-        # to reset the task form.
-        return render_swap(
-            self.request,
-            "tasks/task/item.html",
-            context={
-                "task": form.instance,
-            },
-            params={
-                "swap": "beforeend",
-                "target": f'[data-task-list="{self.kwargs['pk']}"]',
-            },
-            trigger={
-                "project-clear-form": form.instance.project.pk,
-            },
+        return trigger_client_event(
+            # Return the rendered task item template
+            # to be swapped into the project task list.
+            render_swap(
+                self.request,
+                "tasks/task/item.html",
+                context={"task": form.instance},
+                params={
+                    "swap": "beforeend",
+                    "target": f'[data-task-list="{self.kwargs['pk']}"]',
+                },
+            ),
+            # And trigger the project clear form event
+            # to reset the task form.
+            "project-clear-form",
+            form.instance.project.pk,
         )
 
 
@@ -64,6 +64,7 @@ class TaskUpdateView(LoginRequiredMixin, ModalMixin, UpdateView):
         # that are owned by the user.
         return super().get_queryset().filter(project__user=self.request.user)
 
+    @hide_modal
     def form_valid(self, form):
         # Run the parent form_valid method to save the form
         super().form_valid(form)
@@ -74,14 +75,11 @@ class TaskUpdateView(LoginRequiredMixin, ModalMixin, UpdateView):
         return render_swap(
             self.request,
             "tasks/task/item.html",
-            context={
-                "task": form.instance,
-            },
+            context={"task": form.instance},
             params={
                 "target": f'[data-task="{form.instance.pk}"]',
                 "select": "li",
             },
-            trigger=[HIDE_MODAL_EVENT],
         )
 
 
@@ -95,6 +93,7 @@ class TaskDeleteView(LoginRequiredMixin, ModalMixin, DeleteView):
         # that are owned by the user.
         return super().get_queryset().filter(project__user=self.request.user)
 
+    @hide_modal
     def delete(self, *args, **kwargs):
         # Run the parent delete method to delete the task
         response = super().delete(*args, **kwargs)
@@ -104,15 +103,11 @@ class TaskDeleteView(LoginRequiredMixin, ModalMixin, DeleteView):
         # See: https://htmx.org/attributes/hx-delete/ for more information.
         response.status_code = 200
 
-        # Return the response with the task item to be removed.
-        # Since we are overrding the delete method, we need to
-        # manually trigger the hide modal event.
-        return hide_modal(
-            reswap(
-                response,
-                {"target": f'[data-task="{self.kwargs["pk"]}"]'},
-            ),
-            {},
+        # Return the response with the task item to be removed
+        # as a HTMX target to be swapped.
+        return reswap(
+            response,
+            {"target": f'[data-task="{self.kwargs["pk"]}"]'},
         )
 
 
