@@ -8,18 +8,16 @@
             <h2>{% block title %}{% endblock title %}</h2>
         </div>
         <div class="card-body">
-            {% block form %}
-                <form id="auth-form"
-                      hx-post="{{ request.path }}"
-                      hx-select=".card-body #auth-form"
-                      hx-swap="outerHTML"
-                      hx-disabled-elt="form .form-control"
-                      x-init="submitting = false"
-                      @submit.prevent="submitting = true">
-                    {% csrf_token %}
-                    {% crispy form %}
-                </form>
-            {% endblock form %}
+            <form id="auth-form"
+                  hx-post="{{ request.path }}"
+                  hx-select=".card-body #auth-form"
+                  hx-swap="outerHTML"
+                  hx-disabled-elt="form .form-control"
+                  x-init="submitting = false"
+                  @submit.prevent="submitting = true">
+                {% csrf_token %}
+                {% crispy form %}
+            </form>
         </div>
         <div class="card-footer d-flex align-items-center justify-content-between">
             {% block form_actions %}{% endblock form_actions %}
