@@ -11,6 +11,7 @@
     }"
     {# fmt:on #}
     hx-post="{% url "tasks:task_create" pk=project.pk %}"
+    @htmx:after-request="if(!event.detail.failed) clearForm();"
     hx-swap="outerHTML">
     <div class="input-group">
         <input
@@ -20,7 +21,6 @@
             placeholder="Start typing here to create new task..."
             x-model="description"
             @input="hasError = false"
-            @project-clear-form.window="event.detail.value === {{ project.pk }} ? clearForm() : null"
             :class="{'is-invalid': hasError}"
             required>
         <button type="submit" class="btn btn-success px-3">Add task</button>

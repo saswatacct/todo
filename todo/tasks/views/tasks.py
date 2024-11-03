@@ -5,7 +5,6 @@ from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import CreateView, DeleteView, UpdateView, View
-from django_htmx.http import trigger_client_event
 
 from todo.core.mixins import ModalMixin
 from todo.core.utils.htmx import render_swap, reswap
@@ -35,22 +34,16 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         # and ensure that the task form is still valid.
         super().form_valid(form)
 
-        return trigger_client_event(
-            # Return the rendered task item template
-            # to be swapped into the project task list.
-            render_swap(
-                self.request,
-                "tasks/task/item.html",
-                context={"task": form.instance},
-                params={
-                    "swap": "beforeend",
-                    "target": f'[data-task-list="{self.kwargs['pk']}"]',
-                },
-            ),
-            # And trigger the project clear form event
-            # to reset the task form.
-            "project-clear-form",
-            form.instance.project.pk,
+        # Return the rendered task item template
+        # to be swapped into the project task list.
+        return render_swap(
+            self.request,
+            "tasks/task/item.html",
+            context={"task": form.instance},
+            params={
+                "swap": "beforeend",
+                "target": f'[data-task-list="{self.kwargs['pk']}"]',
+            },
         )
 
 
