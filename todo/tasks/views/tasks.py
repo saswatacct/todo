@@ -71,8 +71,7 @@ class TaskUpdateView(LoginRequiredMixin, ModalMixin, UpdateView):
         super().form_valid(form)
 
         # Return the rendered task item template
-        # to be swapped into the project task list
-        # and trigger the hide modal event.
+        # to be swapped into the project task list.
         return render_swap(
             self.request,
             "tasks/task/item.html",

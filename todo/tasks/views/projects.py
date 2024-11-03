@@ -34,8 +34,7 @@ class ProjectCreateView(LoginRequiredMixin, ModalMixin, CreateView):
         super().form_valid(form)
 
         # Return the rendered project item template
-        # to be swapped into the project list and trigger
-        # hide modal event to close the modal.
+        # to be added into the project list.
         return render_swap(
             self.request,
             "tasks/project/item.html",
@@ -60,8 +59,7 @@ class ProjectUpdateView(LoginRequiredMixin, ModalMixin, UpdateView):
         super().form_valid(form)
 
         # Return the rendered project item template
-        # to be swapped into the project list and trigger
-        # hide modal event to close the modal.
+        # to be swapped inside the project list.
         return render_swap(
             self.request,
             "tasks/project/item.html",
@@ -94,8 +92,8 @@ class ProjectDeleteView(LoginRequiredMixin, ModalMixin, DeleteView):
         # See: https://htmx.org/attributes/hx-delete/ for more information.
         response.status_code = 200
 
-        # Return the response object with the hide modal event
-        # to close the modal after the project is deleted.
+        # Return the response object with the project item
+        # as a target to remove.
         return reswap(
             response,
             {"target": f'[data-project="{self.kwargs["pk"]}"]'},
