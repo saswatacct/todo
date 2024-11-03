@@ -1,24 +1,24 @@
-function modalComponent() {
-  return {
+document.addEventListener("alpine:init", () => {
+  Alpine.data('modal', () => ({
     /**
-     * Show modal event listener
-     * @param {Event} custom HTMX event
+     * Method to create and show modal window
      */
-    showModal(event) {
-      // Wait for the next tick to ensure the modal is in the DOM
+    show(){
       this.$nextTick(() => {
-        const options = event.detail;
-        // Create a new modal instance
-        this.modal = new bootstrap.Modal(this.$el, options);
-        // Show the modal
+        // Because we don't provide any of modal options
+        // from the event, we just create new instance
+        // with default options.
+        this.modal = new bootstrap.Modal(this.$el, {});
+
+        // Show modal window
         this.modal.show();
       });
     },
     /**
-     * Hide modal function
+     * Method to hide modal window
      */
-    hideModal() {
+    hide(){
       this.modal.hide();
-    },
-  };
-}
+    }
+  }))
+});

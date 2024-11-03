@@ -1,6 +1,5 @@
-from collections.abc import Mapping
 from functools import wraps
-from typing import Any, Callable, Optional
+from typing import Callable
 
 from django.http import HttpResponse
 from django_htmx.http import trigger_client_event
@@ -9,18 +8,17 @@ SHOW_MODAL_EVENT = "show-modal"
 HIDE_MODAL_EVENT = "hide-modal"
 
 
-def show_modal(response: HttpResponse, options: Optional[Mapping[str, Any]] = None) -> HttpResponse:
+def show_modal(response: HttpResponse) -> HttpResponse:
     """Show a modal after a request.
 
     Args:
         response (HttpResponse): The response object.
-        options (Mapping[str, Any], optional): The options to show the modal. Defaults to None.
 
     Returns:
         HttpResponse: The response object.
     """
 
-    return trigger_client_event(response, SHOW_MODAL_EVENT, options)
+    return trigger_client_event(response, SHOW_MODAL_EVENT)
 
 
 def hide_modal(view: Callable[..., HttpResponse]) -> Callable[..., HttpResponse]:
