@@ -10,6 +10,7 @@
         method="post"
         hx-post="{% url "tasks:project_create" %}"
         hx-swap="outerHTML"
+        hx-disabled-elt='#create-project-form .form-control, [form="create-project-form"]'
         hx-select="#create-project-form">
         {% crispy form %}
     </form>

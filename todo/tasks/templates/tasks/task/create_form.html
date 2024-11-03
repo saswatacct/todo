@@ -11,6 +11,7 @@
     }"
     {# fmt:on #}
     hx-post="{% url "tasks:task_create" pk=project.pk %}"
+    hx-disabled-elt="find button, find input"
     @htmx:after-request="if(!event.detail.failed) clearForm();"
     hx-swap="outerHTML">
     <div class="input-group">

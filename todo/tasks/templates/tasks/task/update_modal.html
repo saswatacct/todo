@@ -9,6 +9,7 @@
         id="update-task-form"
         method="post"
         hx-post="{% url "tasks:task_update" pk=form.instance.pk %}"
+        hx-disabled-elt='#update-task-form .form-control, [form="update-task-form"]'
         hx-swap="outerHTML"
         hx-select="#update-task-form">
         {% crispy form %}
