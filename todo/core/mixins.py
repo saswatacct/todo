@@ -20,7 +20,7 @@ class SuccessRedirectMixin:
 
     def form_valid(self, *args, **kwargs) -> HttpResponse:
         response: HttpResponse = super().form_valid(*args, **kwargs)
-        response["HX-Location"] = self.get_success_url()
+        response["HX-Redirect"] = self.get_success_url()
         # Set the status code to 200 to force HTMX to
         # follow the redirect.
         response.status_code = 200

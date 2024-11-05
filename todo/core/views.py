@@ -20,7 +20,7 @@ class LogoutView(ModalMixin, BaseLogoutView):
 
         response = super().post(*args, **kwargs)
         response.status_code = 200
-        response.headers["HX-Location"] = reverse("account_login")
+        response.headers["HX-Redirect"] = reverse("account_login")
         return response
 
 
